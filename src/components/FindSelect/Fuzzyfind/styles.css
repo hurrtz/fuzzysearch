@@ -2,3 +2,7 @@
   max-height: 400px;
   overflow: auto;
 }
+
+.findSelect .results .matched {
+  color: red;
+}

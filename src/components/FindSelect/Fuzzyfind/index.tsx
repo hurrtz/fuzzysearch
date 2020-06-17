@@ -24,7 +24,7 @@ const Fuzzyfind = ({
     return null;
   }
 
-  const FUSE = new Fuse(haystack, { threshold: 0.3 });
+  const FUSE = new Fuse(haystack, { threshold: 0.1, includeMatches: true });
 
   const handleSelect = (item: string) => {
     onSelect(item);
@@ -32,6 +32,38 @@ const Fuzzyfind = ({
 
   const handleMouseEnter = (item: string) => {
     onPreview(item);
+  };
+
+  const renderResultItem = (
+    item: string,
+    matches: readonly Fuse.FuseResultMatch[] | undefined,
+  ) => {
+    const characters = Array.from(item).map((character, index) => (
+      <span key={`${character}_${index}`}>{character}</span>
+    ));
+
+    if (matches) {
+      matches[0].indices.forEach((indice) => {
+        const rangeOfMatchedCharacters = [indice[0]];
+
+        for (let i = indice[0]; i <= indice[1]; i += 1) {
+          rangeOfMatchedCharacters.push(i);
+        }
+
+        rangeOfMatchedCharacters.forEach((matchedCharacterPosition) => {
+          characters[matchedCharacterPosition] = (
+            <span
+              className="matched"
+              key={`${item[matchedCharacterPosition]}_${matchedCharacterPosition}`}
+            >
+              {item[matchedCharacterPosition]}
+            </span>
+          );
+        });
+      });
+    }
+
+    return characters;
   };
 
   const renderResults = () => {
@@ -53,14 +85,14 @@ const Fuzzyfind = ({
       <Card className="results">
         <CardContent>
           <List>
-            {RESULTS.map(({ item: itemText }) => (
+            {RESULTS.map(({ item: itemText, matches }) => (
               <ListItem
                 key={itemText}
                 button
                 onClick={() => handleSelect(itemText)}
                 onMouseEnter={() => handleMouseEnter(itemText)}
               >
-                {itemText}
+                {renderResultItem(itemText, matches)}
               </ListItem>
             ))}
           </List>

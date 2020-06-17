@@ -20,7 +20,7 @@ const FindSelect = ({ items, fallbackComponent }: Props) => {
   };
 
   return (
-    <form noValidate autoComplete="off">
+    <form noValidate autoComplete="off" className="findSelect">
       <TextField
         value={needle}
         onChange={handleChange}

@@ -1,6 +1,7 @@
 import React, { RefObject } from 'react';
 import { Popper, Card, List, ListItem } from '@material-ui/core';
 import Fuse from 'fuse.js';
+import './styles.css';
 
 interface Props {
   needle: string;
@@ -29,7 +30,7 @@ const Fuzzyfind = ({ needle, haystack, anchorEl }: Props) => {
     }
 
     return (
-      <Card>
+      <Card className="results">
         <List>
           {RESULTS.map(({ item: itemText }) => (
             <ListItem key={itemText} button>
@@ -48,7 +49,7 @@ const Fuzzyfind = ({ needle, haystack, anchorEl }: Props) => {
       disablePortal
       modifiers={{
         flip: {
-          enabled: true,
+          enabled: false,
         },
         preventOverflow: {
           enabled: true,

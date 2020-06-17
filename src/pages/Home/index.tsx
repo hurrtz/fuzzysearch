@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import { Container, Box, Typography } from '@material-ui/core';
 import FindSelect from '../../components/FindSelect';
 import DataIsBeingFetched from '../../components/DataIsBeingFetched';
 import axios from 'axios';
@@ -27,6 +25,10 @@ const Home = () => {
     }, DELAY);
   }, []);
 
+  const onResult = (result: string) => {
+    console.log(`we have the fruit: ${result}`);
+  };
+
   return (
     <Container maxWidth="sm">
       <Box my={4}>
@@ -37,8 +39,11 @@ const Home = () => {
         <FindSelect
           items={fruits}
           fallbackComponent={
-            <DataIsBeingFetched text="Your fruits are being plucked from the orchard" />
+            <Box textAlign="center">
+              <DataIsBeingFetched text="Your fruits are being plucked from the orchard" />
+            </Box>
           }
+          onSelect={onResult}
         />
       </Box>
     </Container>

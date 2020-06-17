@@ -5,10 +5,12 @@ import Fuzzyfind from './Fuzzyfind';
 interface Props {
   items: string[];
   fallbackComponent?: ReactElement;
+  onSelect: Function;
 }
 
-const FindSelect = ({ items, fallbackComponent }: Props) => {
+const FindSelect = ({ items, fallbackComponent, onSelect }: Props) => {
   const [needle, setNeedle] = useState('');
+  const [finderIsOpen, setFinderIsOpen] = useState(true);
   const inputRef = useRef(null);
 
   if (!items.length) {
@@ -17,6 +19,13 @@ const FindSelect = ({ items, fallbackComponent }: Props) => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNeedle(event.target.value);
+    setFinderIsOpen(true);
+  };
+
+  const handleSelect = (result: string) => {
+    setNeedle(result);
+    setFinderIsOpen(false);
+    onSelect(result);
   };
 
   return (
@@ -28,7 +37,13 @@ const FindSelect = ({ items, fallbackComponent }: Props) => {
         inputRef={inputRef}
         fullWidth
       />
-      <Fuzzyfind needle={needle} haystack={items} anchorEl={inputRef} />
+      <Fuzzyfind
+        needle={needle}
+        haystack={items}
+        anchorEl={inputRef}
+        onSelect={handleSelect}
+        open={finderIsOpen}
+      />
     </form>
   );
 };

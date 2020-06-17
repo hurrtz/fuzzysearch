@@ -28,7 +28,7 @@ const Home = () => {
     <Container maxWidth="sm">
       <Box my={4}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Pick your fruit!
+          Choose your fruit!
         </Typography>
 
         <Fuzzyfind

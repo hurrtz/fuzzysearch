@@ -9,11 +9,17 @@ interface Props {
   anchorEl: RefObject<HTMLInputElement>;
   onSelect: Function;
   open: boolean;
+  onPreview: Function;
 }
 
-const Fuzzyfind = ({ needle, haystack, anchorEl, onSelect, open }: Props) => {
-  console.log(open);
-
+const Fuzzyfind = ({
+  needle,
+  haystack,
+  anchorEl,
+  onSelect,
+  open,
+  onPreview,
+}: Props) => {
   if (!needle) {
     return null;
   }
@@ -22,6 +28,10 @@ const Fuzzyfind = ({ needle, haystack, anchorEl, onSelect, open }: Props) => {
 
   const handleSelect = (item: string) => {
     onSelect(item);
+  };
+
+  const handleMouseEnter = (item: string) => {
+    onPreview(item);
   };
 
   const renderResults = () => {
@@ -48,6 +58,7 @@ const Fuzzyfind = ({ needle, haystack, anchorEl, onSelect, open }: Props) => {
                 key={itemText}
                 button
                 onClick={() => handleSelect(itemText)}
+                onMouseEnter={() => handleMouseEnter(itemText)}
               >
                 {itemText}
               </ListItem>

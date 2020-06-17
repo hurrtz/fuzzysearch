@@ -10,6 +10,7 @@ interface Props {
 
 const FindSelect = ({ items, fallbackComponent, onSelect }: Props) => {
   const [needle, setNeedle] = useState('');
+  const [previewNeedle, setPreviewNeedle] = useState<string | null>(null);
   const [finderIsOpen, setFinderIsOpen] = useState(true);
   const inputRef = useRef(null);
 
@@ -22,6 +23,10 @@ const FindSelect = ({ items, fallbackComponent, onSelect }: Props) => {
     setFinderIsOpen(true);
   };
 
+  const handleOnPreview = (previewText?: string) => {
+    setPreviewNeedle(previewText || null);
+  };
+
   const handleSelect = (result: string) => {
     setNeedle(result);
     setFinderIsOpen(false);
@@ -31,7 +36,7 @@ const FindSelect = ({ items, fallbackComponent, onSelect }: Props) => {
   return (
     <form noValidate autoComplete="off" className="findSelect">
       <TextField
-        value={needle}
+        value={previewNeedle || needle}
         onChange={handleChange}
         variant="outlined"
         inputRef={inputRef}
@@ -43,6 +48,7 @@ const FindSelect = ({ items, fallbackComponent, onSelect }: Props) => {
         anchorEl={inputRef}
         onSelect={handleSelect}
         open={finderIsOpen}
+        onPreview={handleOnPreview}
       />
     </form>
   );

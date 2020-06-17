@@ -1,7 +1,7 @@
 import React from 'react';
-import './App.css';
+import './styles.css';
 
-function App() {
+function Home() {
   return (
     <div>
       content
@@ -9,4 +9,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

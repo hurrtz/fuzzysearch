@@ -19,6 +19,7 @@ const FindSelect = ({ items, fallbackComponent, onSelect }: Props) => {
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPreviewNeedle(null);
     setNeedle(event.target.value);
     setFinderIsOpen(true);
   };

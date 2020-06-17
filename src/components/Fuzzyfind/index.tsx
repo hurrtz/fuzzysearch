@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
-const Fuzzyfind = () => {
+interface Props {
+  items: string[];
+  fallbackComponent?: ReactElement;
+}
+
+const Fuzzyfind = ({ items, fallbackComponent }: Props) => {
+  if (!items.length) {
+    return fallbackComponent || null;
+  }
+
   return <div>fuzzy</div>;
 };
 

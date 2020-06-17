@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Fuzzyfind from '../../components/Fuzzyfind';
+import FindSelect from '../../components/FindSelect';
 import DataIsBeingFetched from '../../components/DataIsBeingFetched';
 import axios from 'axios';
+import { uniq } from 'lodash';
 import './styles.css';
 
 const Home = () => {
@@ -18,8 +19,10 @@ const Home = () => {
     );
 
     setTimeout(() => {
-      axios.get('/data.json').then(({ data: { fruits: fetchedFruits } }) => {
-        setFruits(fetchedFruits);
+      axios.get('/data.json').then(({ data: { fruits: _fetchedFruits } }) => {
+        const fetchedFruits = _fetchedFruits;
+        fetchedFruits.sort();
+        setFruits(uniq(fetchedFruits));
       });
     }, DELAY);
   }, []);
@@ -27,11 +30,11 @@ const Home = () => {
   return (
     <Container maxWidth="sm">
       <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h4" component="h1" gutterBottom align="center">
           Choose your fruit!
         </Typography>
 
-        <Fuzzyfind
+        <FindSelect
           items={fruits}
           fallbackComponent={
             <DataIsBeingFetched text="Your fruits are being plucked from the orchard" />

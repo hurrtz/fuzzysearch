@@ -16,6 +16,9 @@ const homeReducer = (state = initialState, action: AnyAction) =>
       case SET_FRUITS:
         draft.fruits = action.payload;
         break;
+
+      default:
+        return state;
     }
   });
 

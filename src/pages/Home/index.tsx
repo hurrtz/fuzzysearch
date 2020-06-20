@@ -1,28 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Container, Box, Typography } from '@material-ui/core';
 import FindSelect from '../../components/FindSelect';
 import DataIsBeingFetched from '../../components/DataIsBeingFetched';
-import axios from 'axios';
-import { uniq } from 'lodash';
+import { connect, ConnectedProps } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+
+import { useInjectSaga } from '../../utils/injectSaga';
+import { useInjectReducer } from '../../utils/injectReducer';
+import saga from './saga';
+import { fetchFruits } from './actions';
+import { makeSelectFruits } from './selectors';
+import reducer from './reducer';
 import './styles.css';
 
-const Home = () => {
-  const [fruits, setFruits] = useState([]);
+const key = 'HOME';
+
+const mapState = createStructuredSelector({
+  fruits: makeSelectFruits(),
+});
+
+const mapDispatch = { fetchFruits };
+
+const connector = connect(mapState, mapDispatch);
+
+interface Props extends ConnectedProps<typeof connector> {}
+
+const Home = ({ fetchFruits, fruits }: Props) => {
+  useInjectSaga({ key, saga });
+  useInjectReducer({ key, reducer });
 
   useEffect(() => {
-    const DELAY_MIN = 1250;
-    const DELAY_MAX = 2500;
-    const DELAY = Math.floor(
-      Math.random() * (DELAY_MAX - DELAY_MIN) + DELAY_MIN,
-    );
-
-    setTimeout(() => {
-      axios.get('/data.json').then(({ data: { fruits: _fetchedFruits } }) => {
-        const fetchedFruits = _fetchedFruits;
-        fetchedFruits.sort();
-        setFruits(uniq(fetchedFruits));
-      });
-    }, DELAY);
+    fetchFruits();
   }, []);
 
   const onResult = (result: string) => {
@@ -50,4 +59,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default compose(connector)(Home);

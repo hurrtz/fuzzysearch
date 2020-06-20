@@ -7,7 +7,7 @@ import getInjectors from './sagaInjectors';
 interface Props {
   key: string;
   saga: Function;
-  mode: string;
+  mode?: string;
 }
 
 export default ({ key, saga, mode }: Props) => (WrappedComponent: FC) => {

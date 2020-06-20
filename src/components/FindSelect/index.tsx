@@ -1,17 +1,26 @@
-import React, { ReactElement, useState, useRef, ChangeEvent } from 'react';
+import React, { ReactElement, useRef, ChangeEvent } from 'react';
 import { TextField } from '@material-ui/core';
 import Fuzzyfind from './Fuzzyfind';
 
-interface Props {
+import { InjectedProps as PropsFromContainer } from '../../containers/FindSelect';
+
+interface Props extends PropsFromContainer {
   items: string[];
   fallbackComponent?: ReactElement;
   onSelect: Function;
 }
 
-const FindSelect = ({ items, fallbackComponent, onSelect }: Props) => {
-  const [needle, setNeedle] = useState('');
-  const [previewNeedle, setPreviewNeedle] = useState<string | null>(null);
-  const [finderIsOpen, setFinderIsOpen] = useState(true);
+const FindSelect = ({
+  items,
+  fallbackComponent,
+  onSelect,
+  setFinderOpen,
+  setNeedle,
+  setPreviewNeedle,
+  previewNeedle,
+  needle,
+  finderOpen,
+}: Props) => {
   const inputRef = useRef(null);
 
   if (!items.length) {
@@ -19,18 +28,18 @@ const FindSelect = ({ items, fallbackComponent, onSelect }: Props) => {
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPreviewNeedle(null);
+    setPreviewNeedle('');
     setNeedle(event.target.value);
-    setFinderIsOpen(true);
+    setFinderOpen(true);
   };
 
   const handleOnPreview = (previewText?: string) => {
-    setPreviewNeedle(previewText || null);
+    setPreviewNeedle(previewText || '');
   };
 
   const handleSelect = (result: string) => {
     setNeedle(result);
-    setFinderIsOpen(false);
+    setFinderOpen(false);
     onSelect(result);
   };
 
@@ -48,7 +57,7 @@ const FindSelect = ({ items, fallbackComponent, onSelect }: Props) => {
         haystack={items}
         anchorEl={inputRef}
         onSelect={handleSelect}
-        open={finderIsOpen}
+        open={finderOpen}
         onPreview={handleOnPreview}
       />
     </form>

@@ -5,7 +5,7 @@ import React, {
   memo,
   useCallback,
 } from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField, useEventCallback } from '@material-ui/core';
 import Fuzzyfind from './Fuzzyfind';
 
 import { InjectedProps as PropsFromContainer } from '../../containers/FindSelect';
@@ -79,6 +79,13 @@ const FindSelect = ({
     if (event.key === 'Enter') {
       event.preventDefault();
       setResult(previewNeedle);
+    }
+
+    if (event.key === 'Backspace') {
+      if (previewNeedle) {
+        setNeedle(previewNeedle);
+        setPreviewNeedle('');
+      }
     }
   };
 

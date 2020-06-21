@@ -57,7 +57,4 @@ const FindSelectContainer = (props: Props) => {
   return <FindSelect {...props} />;
 };
 
-export default memo(connector(FindSelectContainer), (prevProps, nextProps) => {
-  console.log(prevProps, nextProps);
-  return false;
-});
+export default memo(connector(FindSelectContainer));

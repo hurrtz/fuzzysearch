@@ -5,7 +5,7 @@ import React, {
   memo,
   useCallback,
 } from 'react';
-import { TextField, useEventCallback } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import Fuzzyfind from './Fuzzyfind';
 
 import { InjectedProps as PropsFromContainer } from '../../containers/FindSelect';

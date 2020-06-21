@@ -19,7 +19,6 @@ interface Props extends PropsFromContainer {
 const FindSelect = ({
   items,
   fallbackComponent,
-  onSelect,
   setFinderOpen,
   setNeedle: _setNeedle,
   setPreviewNeedle,

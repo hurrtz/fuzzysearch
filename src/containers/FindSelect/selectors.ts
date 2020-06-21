@@ -11,6 +11,17 @@ const makeSelectNeedle = () =>
   createSelector(selectFindSelect, (findSelect) => findSelect.needle);
 
 const makeSelectPreviewNeedle = () =>
-  createSelector(selectFindSelect, (findSelect) => findSelect.previewNeedle);
+  createSelector(
+    selectFindSelect,
+    (findSelect) => findSelect.previewNeedle || findSelect.needle,
+  );
 
-export { makeSelectFinderOpen, makeSelectPreviewNeedle, makeSelectNeedle };
+const makeSelectResults = () =>
+  createSelector(selectFindSelect, (findSelect) => findSelect.results);
+
+export {
+  makeSelectFinderOpen,
+  makeSelectPreviewNeedle,
+  makeSelectNeedle,
+  makeSelectResults,
+};

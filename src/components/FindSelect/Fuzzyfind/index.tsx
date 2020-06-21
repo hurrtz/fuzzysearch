@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React, { memo, RefObject } from 'react';
 import { Popper, Card, CardContent, List, ListItem } from '@material-ui/core';
 import Fuse from 'fuse.js';
 import './styles.css';
@@ -10,6 +10,7 @@ interface Props {
   onSelect: Function;
   open: boolean;
   onPreview: Function;
+  onResults: Function;
 }
 
 const Fuzzyfind = ({
@@ -19,6 +20,7 @@ const Fuzzyfind = ({
   onSelect,
   open,
   onPreview,
+  onResults,
 }: Props) => {
   if (!needle) {
     return null;
@@ -66,8 +68,18 @@ const Fuzzyfind = ({
     return characters;
   };
 
-  const renderResults = () => {
+  const getResults = () => {
     const RESULTS = FUSE.search(needle);
+
+    if (RESULTS) {
+      onResults(RESULTS.map((result) => result.item));
+    }
+
+    return RESULTS;
+  };
+
+  const renderResults = () => {
+    const RESULTS = getResults();
 
     if (!RESULTS || !RESULTS.length) {
       return (
@@ -122,4 +134,4 @@ const Fuzzyfind = ({
   );
 };
 
-export default Fuzzyfind;
+export default memo(Fuzzyfind);

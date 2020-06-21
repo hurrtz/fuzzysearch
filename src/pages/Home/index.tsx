@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Container, Box, Typography } from '@material-ui/core';
 import { connect, ConnectedProps } from 'react-redux';
-import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import FindSelect from '../../containers/FindSelect';
@@ -30,8 +29,10 @@ const Home = ({ fetchFruits, fruits }: Props) => {
   useInjectReducer({ key: NS, reducer });
 
   useEffect(() => {
-    fetchFruits();
-  }, []);
+    if (!fruits.length) {
+      fetchFruits();
+    }
+  }, [fruits]);
 
   const onResult = (result: string) => {
     console.log(`we have the fruit: ${result}`);
@@ -58,4 +59,4 @@ const Home = ({ fetchFruits, fruits }: Props) => {
   );
 };
 
-export default compose(connector)(Home);
+export default connector(Home);

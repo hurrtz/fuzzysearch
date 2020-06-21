@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, memo } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -6,11 +6,17 @@ import { createStructuredSelector } from 'reselect';
 import { useInjectReducer } from '../../utils/injectReducer';
 import FindSelect from '../../components/FindSelect';
 import { NS } from './constants';
-import { setFinderOpen, setNeedle, setPreviewNeedle } from './actions';
+import {
+  setFinderOpen,
+  setNeedle,
+  setPreviewNeedle,
+  setResults,
+} from './actions';
 import {
   makeSelectFinderOpen,
   makeSelectNeedle,
   makeSelectPreviewNeedle,
+  makeSelectResults,
 } from './selectors';
 import reducer from './reducer';
 
@@ -18,9 +24,10 @@ const mapState = createStructuredSelector({
   finderOpen: makeSelectFinderOpen(),
   needle: makeSelectNeedle(),
   previewNeedle: makeSelectPreviewNeedle(),
+  results: makeSelectResults(),
 });
 
-const mapDispatch = { setFinderOpen, setNeedle, setPreviewNeedle };
+const mapDispatch = { setFinderOpen, setNeedle, setPreviewNeedle, setResults };
 
 const connector = connect(mapState, mapDispatch);
 
@@ -38,4 +45,7 @@ const FindSelectContainer = (props: Props) => {
   return <FindSelect {...props} />;
 };
 
-export default compose(connector)(FindSelectContainer);
+export default memo(connector(FindSelectContainer), (prevProps, nextProps) => {
+  console.log(prevProps, nextProps);
+  return false;
+});

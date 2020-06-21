@@ -11,17 +11,22 @@ const makeSelectNeedle = () =>
   createSelector(selectFindSelect, (findSelect) => findSelect.needle);
 
 const makeSelectPreviewNeedle = () =>
-  createSelector(
-    selectFindSelect,
-    (findSelect) => findSelect.previewNeedle || findSelect.needle,
-  );
+  createSelector(selectFindSelect, (findSelect) => findSelect.previewNeedle);
 
 const makeSelectResults = () =>
   createSelector(selectFindSelect, (findSelect) => findSelect.results);
+
+const makeSelectSelectedIndex = () =>
+  createSelector(selectFindSelect, (findSelect) => findSelect.selectedIndex);
+
+const makeSelectResult = () =>
+  createSelector(selectFindSelect, (findSelect) => findSelect.result);
 
 export {
   makeSelectFinderOpen,
   makeSelectPreviewNeedle,
   makeSelectNeedle,
   makeSelectResults,
+  makeSelectSelectedIndex,
+  makeSelectResult,
 };

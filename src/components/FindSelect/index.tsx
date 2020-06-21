@@ -6,7 +6,6 @@ import React, {
   useCallback,
 } from 'react';
 import { TextField } from '@material-ui/core';
-import { debounce } from 'lodash';
 import Fuzzyfind from './Fuzzyfind';
 
 import { InjectedProps as PropsFromContainer } from '../../containers/FindSelect';
@@ -28,29 +27,30 @@ const FindSelect = ({
   needle,
   finderOpen,
   setResults,
+  setSelectedIndex,
+  selectedIndex,
+  result,
+  setResult,
 }: Props) => {
   const inputRef = useRef(null);
 
-  const setNeedle = useCallback(
-    debounce((value: string) => {
-      if (previewNeedle) {
-        setPreviewNeedle('');
-      }
+  const setNeedle = useCallback((value: string) => {
+    if (previewNeedle) {
+      setPreviewNeedle('');
+    }
 
-      _setNeedle(value);
+    _setNeedle(value);
 
-      if (value && !finderOpen) {
-        setFinderOpen(true);
-      } else {
-        setFinderOpen(false);
-      }
+    if (value && !finderOpen) {
+      setFinderOpen(true);
+    } else {
+      setFinderOpen(false);
+    }
 
-      if (!value) {
-        setResults([]);
-      }
-    }, 250),
-    [],
-  );
+    if (!value) {
+      setResults([]);
+    }
+  }, []);
 
   if (!items.length) {
     return fallbackComponent || null;
@@ -65,26 +65,28 @@ const FindSelect = ({
   };
 
   const handleSelect = (result: string) => {
-    setNeedle(result);
-
-    if (finderOpen) {
-      setFinderOpen(false);
-    }
-
-    onSelect(result);
+    setResult(result);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    // event.preventDefault();
-
     if (event.key === 'ArrowDown') {
+      setSelectedIndex(1);
+    }
+
+    if (event.key === 'ArrowUp') {
+      setSelectedIndex(-1);
+    }
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      setResult(previewNeedle);
     }
   };
 
   return (
     <form noValidate autoComplete="off" className="findSelect">
       <TextField
-        defaultValue={needle}
+        value={result || previewNeedle || needle}
         onChange={handleChange}
         variant="outlined"
         inputRef={inputRef}
@@ -99,6 +101,7 @@ const FindSelect = ({
         open={finderOpen}
         onPreview={handleOnPreview}
         onResults={setResults}
+        selectedIndex={selectedIndex}
       />
     </form>
   );

@@ -1,6 +1,5 @@
 import React, { ReactElement, memo } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import { useInjectReducer } from '../../utils/injectReducer';
@@ -11,12 +10,16 @@ import {
   setNeedle,
   setPreviewNeedle,
   setResults,
+  setSelectedIndex,
+  setResult,
 } from './actions';
 import {
   makeSelectFinderOpen,
   makeSelectNeedle,
   makeSelectPreviewNeedle,
   makeSelectResults,
+  makeSelectSelectedIndex,
+  makeSelectResult,
 } from './selectors';
 import reducer from './reducer';
 
@@ -25,9 +28,18 @@ const mapState = createStructuredSelector({
   needle: makeSelectNeedle(),
   previewNeedle: makeSelectPreviewNeedle(),
   results: makeSelectResults(),
+  selectedIndex: makeSelectSelectedIndex(),
+  result: makeSelectResult(),
 });
 
-const mapDispatch = { setFinderOpen, setNeedle, setPreviewNeedle, setResults };
+const mapDispatch = {
+  setFinderOpen,
+  setNeedle,
+  setPreviewNeedle,
+  setResults,
+  setSelectedIndex,
+  setResult,
+};
 
 const connector = connect(mapState, mapDispatch);
 

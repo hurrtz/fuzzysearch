@@ -6,22 +6,47 @@ import {
   SET_NEEDLE,
   SET_SELECTED_INDEX,
   SET_RESULTS,
+  SET_RESULT,
 } from './constants';
 
 export interface State {
   finderOpen: boolean;
   previewNeedle: string;
   needle: string;
-  selectedIndex: number;
+  selectedIndex?: number;
   results: string[];
+  result: string;
 }
 
 export const initialState: State = {
   finderOpen: false,
   previewNeedle: '',
   needle: '',
-  selectedIndex: -1,
+  selectedIndex: undefined,
   results: [],
+  result: '',
+};
+
+const handleChangeSelectedIndex = (
+  results: State['results'],
+  currentIndex: State['selectedIndex'],
+  index?: number,
+) => {
+  if (index === undefined) {
+    return undefined;
+  }
+
+  if (index > 0) {
+    if (currentIndex === undefined) {
+      return 0;
+    }
+
+    return Math.min((currentIndex || 0) + 1, results.length - 1);
+  }
+
+  if (index < 0) {
+    return Math.max((currentIndex || 0) - 1, 0);
+  }
 };
 
 const homeReducer = (state = initialState, action: AnyAction) =>
@@ -40,11 +65,28 @@ const homeReducer = (state = initialState, action: AnyAction) =>
         break;
 
       case SET_SELECTED_INDEX:
-        draft.selectedIndex = action.payload;
+        const previewIndex = handleChangeSelectedIndex(
+          draft.results,
+          draft.selectedIndex,
+          action.payload,
+        );
+        draft.selectedIndex = previewIndex;
+        draft.previewNeedle =
+          previewIndex !== undefined
+            ? draft.results[previewIndex]
+            : draft.previewNeedle;
         break;
 
       case SET_RESULTS:
         draft.results = action.payload;
+        break;
+
+      case SET_RESULT:
+        draft.finderOpen = false;
+        draft.previewNeedle = '';
+        draft.needle = '';
+        draft.selectedIndex = undefined;
+        draft.result = action.payload;
         break;
 
       default:

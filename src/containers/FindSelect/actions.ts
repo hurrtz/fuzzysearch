@@ -4,6 +4,7 @@ import {
   SET_PREVIEW_NEEDLE,
   SET_SELECTED_INDEX,
   SET_RESULTS,
+  SET_RESULT,
 } from './constants';
 
 export const setFinderOpen = (payload: boolean) => ({
@@ -23,7 +24,12 @@ export const setResults = (payload: string[]) => ({
   payload,
 });
 
-export const setSelectedIndex = (payload: number) => ({
+export const setSelectedIndex = (payload?: number) => ({
   type: SET_SELECTED_INDEX,
+  payload,
+});
+
+export const setResult = (payload: string) => ({
+  type: SET_RESULT,
   payload,
 });

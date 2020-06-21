@@ -1,6 +1,7 @@
 import React, { memo, RefObject } from 'react';
 import { Popper, Card, CardContent, List, ListItem } from '@material-ui/core';
 import Fuse from 'fuse.js';
+import classnames from 'classnames';
 import './styles.css';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   open: boolean;
   onPreview: Function;
   onResults: Function;
+  selectedIndex: number;
 }
 
 const Fuzzyfind = ({
@@ -21,6 +23,7 @@ const Fuzzyfind = ({
   open,
   onPreview,
   onResults,
+  selectedIndex,
 }: Props) => {
   if (!needle) {
     return null;
@@ -97,10 +100,13 @@ const Fuzzyfind = ({
       <Card className="results">
         <CardContent>
           <List>
-            {RESULTS.map(({ item: itemText, matches }) => (
+            {RESULTS.map(({ item: itemText, matches }, index) => (
               <ListItem
                 key={itemText}
                 button
+                className={classnames('result', {
+                  active: selectedIndex === index,
+                })}
                 onClick={() => handleSelect(itemText)}
                 onMouseEnter={() => handleMouseEnter(itemText)}
               >

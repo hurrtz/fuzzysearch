@@ -5,3 +5,4 @@ export const SET_PREVIEW_NEEDLE = 'SET PREVIEW NEEDLE';
 export const SET_FINDER_OPEN = 'SET FINDER OPEN';
 export const SET_RESULTS = 'SET RESULTS';
 export const SET_SELECTED_INDEX = 'SET SELECTED INDEX';
+export const SET_RESULT = 'SET RESULT';

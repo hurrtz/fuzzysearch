@@ -6,3 +6,7 @@
 .findSelect .results .matched {
   color: red;
 }
+
+.findSelect .results .result.active {
+  background-color: #ddd;
+}
